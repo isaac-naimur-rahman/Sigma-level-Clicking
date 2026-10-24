@@ -6,7 +6,6 @@
 <title>Sigma Click Challenge</title>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
 <style>
-  /* ===== THEMES: every color comes from these variables. Add a theme by copying a block. ===== */
   :root, :root[data-theme="sunny"] {
     --bg:#e9eef5; --panel:#ffffff; --soft:#f2f6fb; --ink:#10243a; --muted:#5b6f86;
     --accent:#ff5a1f; --on:#ffffff; --line:#cfd9e6;
@@ -15,7 +14,6 @@
   :root[data-theme="forest"] { --bg:#0f2a20; --panel:#173a2d; --soft:#1d4637; --ink:#e8f5e1; --muted:#a3c5b0; --accent:#f0c94a; --on:#2b2204; --line:#2f5b48; }
   :root[data-theme="neon"]   { --bg:#0a0f1e; --panel:#111a33; --soft:#18244a; --ink:#e6f3ff; --muted:#8fa7c9; --accent:#22e6c7; --on:#032a25; --line:#243562; }
   :root[data-theme="sakura"] { --bg:#fbe9ee; --panel:#fff8fa; --soft:#fdeff3; --ink:#4a1f33; --muted:#8c5f74; --accent:#e0457b; --on:#ffffff; --line:#f1c9d6; }
-  /* Science themes. --deco paints the colorful background (stars, nebulas, graph paper, wave rings) */
   :root[data-theme="cosmos"] {
     --bg:#070816; --panel:#0f1230; --soft:#171b45; --ink:#e9ecff; --muted:#9aa3d6; --accent:#ffb347; --on:#2a1500; --line:#262c66;
     --deco: radial-gradient(1.5px 1.5px at 12% 18%, #fff, transparent), radial-gradient(1px 1px at 78% 12%, #fff, transparent),
@@ -40,7 +38,7 @@
             radial-gradient(ellipse 50% 40% at 90% 90%, rgba(255,79,216,.28), transparent),
             radial-gradient(ellipse 50% 40% at 0% 0%, rgba(0,229,255,.22), transparent);
   }
-  /* Colorful backgrounds for the original themes */
+  
   :root[data-theme="sunny"]  { --deco: radial-gradient(circle at 90% 5%, rgba(255,200,60,.55), transparent 28%), radial-gradient(ellipse 60% 40% at 0% 100%, rgba(80,170,255,.30), transparent); }
   :root[data-theme="night"]  { --deco: radial-gradient(1.5px 1.5px at 15% 20%, #fff, transparent), radial-gradient(1px 1px at 70% 15%, #fff, transparent), radial-gradient(1.5px 1.5px at 45% 80%, #fff, transparent), radial-gradient(ellipse 50% 40% at 100% 0%, rgba(255,95,168,.30), transparent); }
   :root[data-theme="forest"] { --deco: radial-gradient(ellipse 60% 40% at 0% 0%, rgba(120,220,120,.25), transparent), radial-gradient(ellipse 50% 40% at 100% 100%, rgba(240,201,74,.20), transparent); }
@@ -71,7 +69,7 @@
   @media (max-width: 820px) { .grid { grid-template-columns: 1fr; } }
   .board, .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 20px; padding: 22px; }
 
-  /* ===== GAME BOARD ===== */
+  
   .readout { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; }
   .clock .num { display: block; font-size: clamp(3.2rem, 11vw, 5rem); font-weight: 800; line-height: .95; font-variant-numeric: tabular-nums; }
   .mini { display: flex; gap: 24px; }
@@ -98,7 +96,7 @@
   .ghost { padding: 8px 18px; border-radius: 99px; border: 1px solid var(--line); background: transparent; font-weight: 600; }
   .ghost:disabled { opacity: .45; cursor: not-allowed; }
 
-  /* ===== SIDE PANEL ===== */
+  
   .tabs { display: flex; gap: 4px; padding: 4px; background: var(--soft); border-radius: 12px; margin-bottom: 18px; }
   .tabs button { flex: 1; padding: 8px; border: 0; border-radius: 9px; background: transparent; font-weight: 600; color: var(--muted); }
   .tabs button[aria-selected="true"] { background: var(--panel); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.15); }
@@ -139,7 +137,7 @@
   .app { position: relative; z-index: 1; }
   .grid { position: relative; }
   :root[data-theme="math"] h1 { font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif; font-weight: 700; letter-spacing: 0; }
-  /* result card (sits above the floating decorations so it is always easy to read) */
+  
   #message { position: relative; z-index: 5; }
   .result { position: relative; z-index: 5; max-width: 420px; margin: 6px auto 14px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 16px; background: var(--soft); text-align: center; }
   .r-title { margin: 0 0 10px; font: 800 1.3rem "Bricolage Grotesque", system-ui, sans-serif; }
@@ -151,12 +149,12 @@
   .r-tags span { padding: 3px 12px; border-radius: 99px; background: var(--accent); color: var(--on); font-weight: 700; font-size: .85rem; }
   .r-tags #r-x { background: #ffcd00; color: #3a2a00; }
   .r-tags:not(:has(span:not([hidden]))) { display: none; }
-  /* picture on the button */
+  
   #click-btn { overflow: hidden; }
   .art { position: absolute; inset: 0; }
   .art svg { width: 100%; height: 100%; display: block; }
   .lbl { position: absolute; left: 50%; bottom: 12%; transform: translateX(-50%); padding: 3px 14px; border-radius: 99px; background: rgba(0,0,0,.5); color: #fff; font-size: clamp(1rem, 3.4vw, 1.25rem); white-space: nowrap; }
-  /* floating decorations: back = behind the game, front = overlapping it */
+  
   #scene-back { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; opacity: .3; }
   #scene-front { position: absolute; inset: -14px; z-index: 4; pointer-events: none; }
   .fl { position: absolute; line-height: 1; white-space: nowrap; animation: drift 9s ease-in-out infinite; }
@@ -179,7 +177,7 @@
   </header>
 
   <div class="grid">
-    <!-- GAME -->
+   
     <section class="board" aria-label="Game">
       <div class="readout">
         <div class="clock"><span class="num" id="time">10.0</span><small>seconds left</small></div>
@@ -205,7 +203,7 @@
       <div class="actions"><button class="ghost" id="share" type="button" disabled>Copy result</button></div>
     </section>
 
-    <!-- SIDE PANEL -->
+   
     <aside class="panel" aria-label="Options and records">
       <div class="tabs" role="tablist">
         <button role="tab" id="tab-options" aria-selected="true" aria-controls="p-options">Options</button>
@@ -250,15 +248,15 @@
 </main>
 
 <script>
-  // ===== 1. ELEMENTS =====
+ 
   const $ = (id) => document.getElementById(id);
   const clickBtn = $("click-btn"), timeEl = $("time"), countEl = $("count"), cpsEl = $("cps");
   const ring = $("ring"), message = $("message"), shareBtn = $("share"), stage = $("stage");
-  const RING = 578; // circle length: 2 x pi x 92
+  const RING = 578; 
 
-  // ===== 2. SETTINGS & SAVED DATA =====
+  
   const MODES = [5, 10, 30, 60];
-  // theme name: [label, color dot]
+  
   const THEMES = {
     cosmos: ["Cosmos", "#ffb347"], math: ["Mathematics", "#3d4cff"], quantum: ["Quantum", "#c77dff"],
     sunny: ["Sunny", "#ff5a1f"], night: ["Night", "#ff5fa8"], forest: ["Forest", "#f0c94a"],
@@ -274,7 +272,7 @@
   }
 
 
-  // ===== THEME ART: the picture on the big button (one SVG drawing per theme) =====
+  
   const ART = {
     cosmos: `<svg viewBox="0 0 200 200"><defs><radialGradient id="c1" cx=".5" cy=".4"><stop offset="0" stop-color="#3a1b7a"/><stop offset="1" stop-color="#0a0a24"/></radialGradient><radialGradient id="c2" cx=".3" cy=".3"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#e2561f"/></radialGradient></defs><rect width="200" height="200" fill="url(#c1)"/><g fill="#fff"><circle cx="30" cy="40" r="1.6"/><circle cx="165" cy="30" r="1.2"/><circle cx="150" cy="160" r="1.6"/><circle cx="40" cy="150" r="1.2"/><circle cx="100" cy="20" r="1"/></g><g transform="rotate(-22 100 100)"><ellipse cx="100" cy="100" rx="82" ry="20" fill="none" stroke="#ffd9a0" stroke-width="7" opacity=".5"/></g><circle cx="100" cy="92" r="46" fill="url(#c2)"/><path d="M60 84q40 14 80-4" stroke="#b83d10" stroke-width="5" fill="none" opacity=".35"/><g transform="rotate(-22 100 92)"><path d="M18 92A82 20 0 0 0 182 92" fill="none" stroke="#ffd9a0" stroke-width="7" opacity=".95"/></g></svg>`,
     math: `<svg viewBox="0 0 200 200"><defs><linearGradient id="m1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2b2f9e"/><stop offset=".6" stop-color="#3d4cff"/><stop offset="1" stop-color="#00b3c7"/></linearGradient></defs><rect width="200" height="200" fill="url(#m1)"/><g stroke="#fff" stroke-opacity=".18"><path d="M0 50h200M0 100h200M0 150h200M50 0v200M100 0v200M150 0v200"/></g><path d="M20 150C60 30 110 30 180 140" fill="none" stroke="#ffd23f" stroke-width="3" stroke-dasharray="6 5"/><g fill="#fff" font-family="Cambria Math,STIX Two Math,Times New Roman,serif" font-style="italic" text-anchor="middle"><text x="100" y="120" font-size="92" font-weight="700">π</text><text x="38" y="52" font-size="30" fill="#ffd23f">∑</text><text x="162" y="52" font-size="30" fill="#ff9ec7">∫</text><text x="38" y="150" font-size="26" fill="#9bf6ff">∞</text><text x="162" y="150" font-size="24" fill="#b8ffb0">√</text></g></svg>`,
@@ -286,7 +284,7 @@
     sakura: `<svg viewBox="0 0 200 200"><defs><radialGradient id="k1" cx=".5" cy=".5"><stop offset="0" stop-color="#ffd6e4"/><stop offset="1" stop-color="#ff8fb4"/></radialGradient></defs><rect width="200" height="200" fill="url(#k1)"/><g transform="translate(100 100)" fill="#fff" stroke="#e0457b" stroke-width="2.5"><ellipse cy="-34" rx="20" ry="30"/><ellipse cy="-34" rx="20" ry="30" transform="rotate(72)"/><ellipse cy="-34" rx="20" ry="30" transform="rotate(144)"/><ellipse cy="-34" rx="20" ry="30" transform="rotate(216)"/><ellipse cy="-34" rx="20" ry="30" transform="rotate(288)"/></g><circle cx="100" cy="100" r="9" fill="#ffd23f"/><g fill="#fff" opacity=".85"><ellipse cx="30" cy="40" rx="7" ry="4" transform="rotate(30 30 40)"/><ellipse cx="170" cy="150" rx="7" ry="4" transform="rotate(-30 170 150)"/></g></svg>`
   };
 
-  // ===== THEME SCENES: floating items as [text, left %, top %, size px, color]. A color makes it an equation. =====
+  
   const SCENES = {
     cosmos: {
       front: [["🪐",92,-7,74],["☄️",-5,44,46],["🛰️",95,70,40],["✨",46,-6,30],["🌠",2,96,40],["Gμν + Λgμν = 8πG/c⁴ Tμν",8,-6,17,"#ffb347"],["E = mc²",80,95,20,"#ffb347"]],
@@ -329,10 +327,10 @@
     fillLayer($("scene-front"), sc.front);
   }
 
-  // ===== 3. ROUND STATE =====
+  
   let count = 0, running = false, startTime = 0, timerId = null, lastResult = "";
 
-  // ===== 4. SOUND (made with the browser, no files needed) =====
+  
   let audio = null;
   function beep(freq, len) {
     if (!profile.sound) return;
@@ -345,7 +343,7 @@
     } catch (e) {}
   }
 
-  // ===== 5. DRAWING THE SCREEN =====
+  
   function rankFor(cps) {
     if (cps < 3) return "Warming up";
     if (cps < 5) return "Fast fingers";
@@ -409,7 +407,7 @@
   }
   function hideResult() { $("result").hidden = true; message.hidden = false; }
 
-  // ===== 6. THE GAME =====
+ 
   function startRound() {
     running = true; startTime = Date.now();
     shareBtn.disabled = true;
@@ -445,7 +443,7 @@
     $("lbl").textContent = "Wait...";
     beep(660, 0.25);
     save(); renderRecords();
-    // short pause so a stray click does not start a new round
+    
     setTimeout(function () {
       clickBtn.disabled = false; $("lbl").textContent = "Play again";
       shareBtn.disabled = false; setControlsLocked(false);
@@ -476,7 +474,7 @@
 
   clickBtn.addEventListener("click", handleClick);
 
-  // Space bar clicks (only when the page body or the big button is focused)
+  
   document.addEventListener("keydown", function (e) {
     if (e.code !== "Space" || !profile.space) return;
     if (e.target !== document.body && e.target !== clickBtn) return;
@@ -487,7 +485,7 @@
     if (e.code === "Space" && profile.space && (e.target === document.body || e.target === clickBtn)) e.preventDefault();
   });
 
-  // ===== 7. OPTIONS =====
+  
   function setSeconds(n) {
     if (running) return;
     profile.seconds = Math.min(120, Math.max(3, Math.round(n) || 10));
@@ -525,7 +523,7 @@
     $(k).addEventListener("change", function () { profile[k] = $(k).checked; save(); renderStatic(); });
   });
 
-  // ===== 8. TABS, SHARE, RESET =====
+ 
   const TABS = ["options", "records", "history"];
   TABS.forEach(function (name) {
     $("tab-" + name).addEventListener("click", function () {
@@ -555,7 +553,7 @@
     save(); renderRecords(); hideResult(); message.textContent = "Scores reset. Fresh start!";
   });
 
-  // ===== 9. START UP =====
+  
   load();
   $("name").value = profile.name;
   renderStatic(); renderRecords(); resetDisplay();
