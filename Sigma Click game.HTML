@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="sunny">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sigma Click Challenge</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
+<style>
+  /* ===== THEMES: every color comes from these variables. Add a theme by copying a block. ===== */
+  :root, :root[data-theme="sunny"] {
+    --bg:#e9eef5; --panel:#ffffff; --soft:#f2f6fb; --ink:#10243a; --muted:#5b6f86;
+    --accent:#ff5a1f; --on:#ffffff; --line:#cfd9e6;
+  }
+  :root[data-theme="night"]  { --bg:#14122b; --panel:#1d1a3d; --soft:#252150; --ink:#efeaff; --muted:#a9a2d6; --accent:#ff5fa8; --on:#26082a; --line:#3a3478; }
+  :root[data-theme="forest"] { --bg:#0f2a20; --panel:#173a2d; --soft:#1d4637; --ink:#e8f5e1; --muted:#a3c5b0; --accent:#f0c94a; --on:#2b2204; --line:#2f5b48; }
+  :root[data-theme="neon"]   { --bg:#0a0f1e; --panel:#111a33; --soft:#18244a; --ink:#e6f3ff; --muted:#8fa7c9; --accent:#22e6c7; --on:#032a25; --line:#243562; }
+  :root[data-theme="sakura"] { --bg:#fbe9ee; --panel:#fff8fa; --soft:#fdeff3; --ink:#4a1f33; --muted:#8c5f74; --accent:#e0457b; --on:#ffffff; --line:#f1c9d6; }
+  /* Science themes. --deco paints the colorful background (stars, nebulas, graph paper, wave rings) */
+  :root[data-theme="cosmos"] {
+    --bg:#070816; --panel:#0f1230; --soft:#171b45; --ink:#e9ecff; --muted:#9aa3d6; --accent:#ffb347; --on:#2a1500; --line:#262c66;
+    --deco: radial-gradient(1.5px 1.5px at 12% 18%, #fff, transparent), radial-gradient(1px 1px at 78% 12%, #fff, transparent),
+            radial-gradient(1.5px 1.5px at 40% 70%, #fff, transparent), radial-gradient(1px 1px at 90% 60%, #fff, transparent),
+            radial-gradient(1px 1px at 25% 90%, #fff, transparent), radial-gradient(1.2px 1.2px at 60% 35%, #fff, transparent),
+            radial-gradient(ellipse 55% 45% at 85% 5%, rgba(168,85,247,.5), transparent),
+            radial-gradient(ellipse 50% 40% at 5% 95%, rgba(236,72,153,.36), transparent),
+            radial-gradient(ellipse 45% 35% at 50% 60%, rgba(34,211,238,.16), transparent);
+  }
+  :root[data-theme="math"] {
+    --bg:#f6f8fb; --panel:#ffffff; --soft:#eef1fb; --ink:#14183a; --muted:#5c6290; --accent:#3d4cff; --on:#ffffff; --line:#cfd5f0;
+    --deco: radial-gradient(circle at 12% 15%, rgba(255,120,200,.30), transparent 38%),
+            radial-gradient(circle at 88% 20%, rgba(0,200,220,.28), transparent 40%),
+            radial-gradient(circle at 70% 90%, rgba(255,190,60,.28), transparent 38%),
+            linear-gradient(rgba(61,76,255,.10) 1px, transparent 1px), linear-gradient(90deg, rgba(61,76,255,.10) 1px, transparent 1px);
+    --deco-size: auto, auto, auto, 28px 28px, 28px 28px;
+  }
+  :root[data-theme="quantum"] {
+    --bg:#0b0618; --panel:#140b2b; --soft:#1d1040; --ink:#f0e8ff; --muted:#b09ad9; --accent:#c77dff; --on:#1a0733; --line:#3a2370;
+    --deco: repeating-radial-gradient(circle at 85% 8%, transparent 0 26px, rgba(199,125,255,.14) 27px 28px),
+            repeating-radial-gradient(circle at 10% 95%, transparent 0 34px, rgba(0,229,255,.10) 35px 36px),
+            radial-gradient(ellipse 50% 40% at 90% 90%, rgba(255,79,216,.28), transparent),
+            radial-gradient(ellipse 50% 40% at 0% 0%, rgba(0,229,255,.22), transparent);
+  }
+  /* Colorful backgrounds for the original themes */
+  :root[data-theme="sunny"]  { --deco: radial-gradient(circle at 90% 5%, rgba(255,200,60,.55), transparent 28%), radial-gradient(ellipse 60% 40% at 0% 100%, rgba(80,170,255,.30), transparent); }
+  :root[data-theme="night"]  { --deco: radial-gradient(1.5px 1.5px at 15% 20%, #fff, transparent), radial-gradient(1px 1px at 70% 15%, #fff, transparent), radial-gradient(1.5px 1.5px at 45% 80%, #fff, transparent), radial-gradient(ellipse 50% 40% at 100% 0%, rgba(255,95,168,.30), transparent); }
+  :root[data-theme="forest"] { --deco: radial-gradient(ellipse 60% 40% at 0% 0%, rgba(120,220,120,.25), transparent), radial-gradient(ellipse 50% 40% at 100% 100%, rgba(240,201,74,.20), transparent); }
+  :root[data-theme="neon"]   { --deco: radial-gradient(ellipse 50% 40% at 0% 0%, rgba(34,230,199,.28), transparent), radial-gradient(ellipse 50% 40% at 100% 100%, rgba(255,0,200,.25), transparent); }
+  :root[data-theme="sakura"] { --deco: radial-gradient(ellipse 50% 40% at 100% 0%, rgba(255,150,190,.5), transparent), radial-gradient(ellipse 50% 40% at 0% 100%, rgba(255,200,150,.4), transparent); }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; min-height: 100vh; background-color: var(--bg); background-image: var(--deco, none); background-size: var(--deco-size, auto); background-attachment: fixed; color: var(--ink);
+    font: 400 1rem/1.5 "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    transition: background .3s, color .3s;
+  }
+  h1, h2, .num { font-family: "Bricolage Grotesque", "Arial Narrow", system-ui, sans-serif; margin: 0; letter-spacing: -.02em; }
+  button, input { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  small { color: var(--muted); }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+  .app { max-width: 1040px; margin: 0 auto; padding: 24px 16px 48px; }
+  .top { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+  h1 { font-size: clamp(1.7rem, 4.5vw, 2.5rem); font-weight: 800; }
+  .sub { margin: 2px 0 0; color: var(--muted); }
+  .who { display: flex; align-items: center; gap: 8px; padding: 6px 14px 6px 8px; border: 1px solid var(--line); border-radius: 99px; background: var(--panel); font-weight: 600; }
+  .who span:first-child { font-size: 1.4rem; line-height: 1; }
+
+  .grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+  @media (max-width: 820px) { .grid { grid-template-columns: 1fr; } }
+  .board, .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 20px; padding: 22px; }
+
+  /* ===== GAME BOARD ===== */
+  .readout { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; }
+  .clock .num { display: block; font-size: clamp(3.2rem, 11vw, 5rem); font-weight: 800; line-height: .95; font-variant-numeric: tabular-nums; }
+  .mini { display: flex; gap: 24px; }
+  .mini b { display: block; font-family: "Bricolage Grotesque", system-ui, sans-serif; font-size: 1.9rem; font-weight: 700; line-height: 1.1; font-variant-numeric: tabular-nums; }
+
+  .stage { position: relative; width: min(78vw, 330px); aspect-ratio: 1; margin: 22px auto 14px; }
+  .stage svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+  .stage circle { fill: none; stroke-width: 7; }
+  .track { stroke: var(--soft); }
+  .prog { stroke: var(--accent); stroke-linecap: round; stroke-dasharray: 578; stroke-dashoffset: 0; }
+  #click-btn {
+    position: absolute; inset: 7%; border-radius: 50%; border: 0; background: var(--accent); color: var(--on);
+    font: 800 clamp(1.3rem, 5vw, 1.8rem)/1.1 "Bricolage Grotesque", system-ui, sans-serif; letter-spacing: -.01em;
+    box-shadow: 0 10px 0 color-mix(in srgb, var(--accent) 55%, #000); transition: transform .06s, box-shadow .06s;
+    user-select: none; -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+  }
+  #click-btn:active:not(:disabled) { transform: translateY(8px); box-shadow: 0 2px 0 color-mix(in srgb, var(--accent) 55%, #000); }
+  #click-btn:disabled { opacity: .55; cursor: not-allowed; }
+  .pop { position: absolute; pointer-events: none; font: 800 1.3rem "Bricolage Grotesque", system-ui, sans-serif; color: var(--accent); animation: pop .6s ease-out forwards; }
+  @keyframes pop { to { transform: translateY(-70px); opacity: 0; } }
+
+  #message { text-align: center; min-height: 3em; margin: 6px 0 10px; font-weight: 600; }
+  .actions { display: flex; justify-content: center; }
+  .ghost { padding: 8px 18px; border-radius: 99px; border: 1px solid var(--line); background: transparent; font-weight: 600; }
+  .ghost:disabled { opacity: .45; cursor: not-allowed; }
+
+  /* ===== SIDE PANEL ===== */
+  .tabs { display: flex; gap: 4px; padding: 4px; background: var(--soft); border-radius: 12px; margin-bottom: 18px; }
+  .tabs button { flex: 1; padding: 8px; border: 0; border-radius: 9px; background: transparent; font-weight: 600; color: var(--muted); }
+  .tabs button[aria-selected="true"] { background: var(--panel); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.15); }
+  .group { margin-bottom: 20px; }
+  .group h2 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { padding: 7px 14px; border-radius: 99px; border: 1px solid var(--line); background: transparent; font-weight: 600; }
+  .chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on); }
+  .chip:disabled { opacity: .45; cursor: not-allowed; }
+  .avatars button { width: 44px; height: 44px; border-radius: 12px; border: 1px solid var(--line); background: transparent; font-size: 1.4rem; line-height: 1; }
+  .avatars button[aria-pressed="true"] { border-color: var(--accent); background: var(--soft); box-shadow: 0 0 0 2px var(--accent); }
+  input[type="text"], input[type="number"] { width: 100%; padding: 9px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--soft); }
+  .custom { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+  .custom input { width: 90px; }
+  label { font-weight: 600; }
+  .switch { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--line); }
+  .switch input { appearance: none; width: 42px; height: 24px; border-radius: 99px; background: var(--line); position: relative; cursor: pointer; transition: background .2s; flex: none; }
+  .switch input::after { content: ""; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; transition: transform .2s; }
+  .switch input:checked { background: var(--accent); }
+  .switch input:checked::after { transform: translateX(18px); }
+
+  table { width: 100%; border-collapse: collapse; margin-bottom: 14px; }
+  th, td { text-align: left; padding: 8px 0; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+  th { color: var(--muted); font-weight: 600; font-size: .9rem; }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+  .stats div { background: var(--soft); border-radius: 12px; padding: 10px 12px; }
+  .stats b { display: block; font: 700 1.4rem "Bricolage Grotesque", system-ui, sans-serif; }
+  .link { background: none; border: 0; padding: 0; color: var(--muted); text-decoration: underline; }
+  .note { color: var(--muted); font-size: .9rem; margin: 10px 0 0; }
+  ul.hist { list-style: none; margin: 0; padding: 0; }
+  ul.hist li { display: flex; justify-content: space-between; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+  #themes .chip::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 7px; background: var(--dot); border: 1px solid rgba(128,128,128,.55); }
+  .saiyan { padding: 12px 14px; margin-bottom: 20px; border: 1px solid var(--line); border-radius: 14px; background: var(--soft); }
+  .saiyan label { display: block; }
+  .saiyan small { display: block; font-weight: 400; }
+  :root[data-saiyan="on"] #click-btn { filter: drop-shadow(0 0 24px rgba(255,205,0,.75)); }
+  body { overflow-x: hidden; }
+  .app { position: relative; z-index: 1; }
+  .grid { position: relative; }
+  :root[data-theme="math"] h1 { font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif; font-weight: 700; letter-spacing: 0; }
+  /* result card (sits above the floating decorations so it is always easy to read) */
+  #message { position: relative; z-index: 5; }
+  .result { position: relative; z-index: 5; max-width: 420px; margin: 6px auto 14px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 16px; background: var(--soft); text-align: center; }
+  .r-title { margin: 0 0 10px; font: 800 1.3rem "Bricolage Grotesque", system-ui, sans-serif; }
+  .r-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .r-stats div { background: var(--panel); border-radius: 12px; padding: 8px 4px; }
+  .r-stats b { display: block; font: 700 1.5rem "Bricolage Grotesque", system-ui, sans-serif; font-variant-numeric: tabular-nums; }
+  #r-rank { font-size: 1.05rem; line-height: 1.9rem; }
+  .r-tags { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 10px; }
+  .r-tags span { padding: 3px 12px; border-radius: 99px; background: var(--accent); color: var(--on); font-weight: 700; font-size: .85rem; }
+  .r-tags #r-x { background: #ffcd00; color: #3a2a00; }
+  .r-tags:not(:has(span:not([hidden]))) { display: none; }
+  /* picture on the button */
+  #click-btn { overflow: hidden; }
+  .art { position: absolute; inset: 0; }
+  .art svg { width: 100%; height: 100%; display: block; }
+  .lbl { position: absolute; left: 50%; bottom: 12%; transform: translateX(-50%); padding: 3px 14px; border-radius: 99px; background: rgba(0,0,0,.5); color: #fff; font-size: clamp(1rem, 3.4vw, 1.25rem); white-space: nowrap; }
+  /* floating decorations: back = behind the game, front = overlapping it */
+  #scene-back { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; opacity: .3; }
+  #scene-front { position: absolute; inset: -14px; z-index: 4; pointer-events: none; }
+  .fl { position: absolute; line-height: 1; white-space: nowrap; animation: drift 9s ease-in-out infinite; }
+  .fl.eq { font-family: "Cambria Math", "STIX Two Math", "Times New Roman", serif; font-style: italic; font-weight: 700; }
+  #scene-front .eq { padding: 4px 10px; border: 1px solid; border-radius: 10px; background: color-mix(in srgb, var(--panel) 82%, transparent); }
+  @keyframes drift { 0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); } 50% { transform: translateY(-14px) rotate(calc(var(--r, 0deg) + 5deg)); } }
+  @media (prefers-reduced-motion: reduce) { .fl { animation: none; } }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } .pop { animation: none; display: none; } }
+</style>
+</head>
+<body>
+<div id="scene-back" aria-hidden="true"></div>
+<main class="app">
+  <header class="top">
+    <div>
+      <h1>Sigma Click Challenge</h1>
+      <p class="sub">Pick a time, then hit the button as fast as you can.</p>
+    </div>
+    <div class="who"><span id="who-avatar">😎</span><span id="who-name">Player</span></div>
+  </header>
+
+  <div class="grid">
+    <!-- GAME -->
+    <section class="board" aria-label="Game">
+      <div class="readout">
+        <div class="clock"><span class="num" id="time">10.0</span><small>seconds left</small></div>
+        <div class="mini">
+          <div><b id="count">0</b><small>clicks</small></div>
+          <div><b id="cps">0.0</b><small>clicks per second</small></div>
+        </div>
+      </div>
+      <div class="stage" id="stage">
+        <svg viewBox="0 0 200 200" aria-hidden="true"><circle class="track" cx="100" cy="100" r="92"/><circle class="prog" id="ring" cx="100" cy="100" r="92"/></svg>
+        <button id="click-btn" type="button"><span class="art" id="art" aria-hidden="true"></span><span class="lbl" id="lbl">Click to start</span></button>
+      </div>
+      <p id="message" aria-live="polite">Click the big button to start the timer.</p>
+      <div class="result" id="result" aria-live="polite" hidden>
+        <p class="r-title">Time is up!</p>
+        <div class="r-stats">
+          <div><b id="r-clicks">0</b><small>clicks</small></div>
+          <div><b id="r-cps">0.0</b><small>per second</small></div>
+          <div><b id="r-rank">-</b><small>rank</small></div>
+        </div>
+        <div class="r-tags"><span id="r-best" hidden>New best score!</span><span id="r-x" hidden>Super Saiyan x8</span></div>
+      </div>
+      <div class="actions"><button class="ghost" id="share" type="button" disabled>Copy result</button></div>
+    </section>
+
+    <!-- SIDE PANEL -->
+    <aside class="panel" aria-label="Options and records">
+      <div class="tabs" role="tablist">
+        <button role="tab" id="tab-options" aria-selected="true" aria-controls="p-options">Options</button>
+        <button role="tab" id="tab-records" aria-selected="false" aria-controls="p-records">Records</button>
+        <button role="tab" id="tab-history" aria-selected="false" aria-controls="p-history">History</button>
+      </div>
+
+      <div id="p-options" role="tabpanel" aria-labelledby="tab-options">
+        <div class="switch saiyan"><label for="saiyan"><b>Super Saiyan Clicker</b><small>Every click counts as 8. Scores are saved separately.</small></label><input type="checkbox" id="saiyan"></div>
+        <div class="group"><h2>Time limit</h2>
+          <div class="row" id="modes"></div>
+          <div class="custom"><label for="custom">Custom (3 to 120 s)</label><input type="number" id="custom" min="3" max="120" inputmode="numeric" placeholder="25"></div>
+        </div>
+        <div class="group"><h2>Theme</h2><div class="row" id="themes"></div></div>
+        <div class="group"><h2>Avatar</h2><div class="row avatars" id="avatars"></div></div>
+        <div class="group"><label for="name">Player name</label><input type="text" id="name" maxlength="16" placeholder="Type your name" autocomplete="off"></div>
+        <div class="group">
+          <div class="switch"><label for="sound">Sound effects</label><input type="checkbox" id="sound"></div>
+          <div class="switch"><label for="fx">Floating +1 pop-ups</label><input type="checkbox" id="fx"></div>
+          <div class="switch"><label for="space">Space bar clicks</label><input type="checkbox" id="space"></div>
+        </div>
+      </div>
+
+      <div id="p-records" role="tabpanel" aria-labelledby="tab-records" hidden>
+        <div class="stats">
+          <div><b id="total">0</b><small>total clicks</small></div>
+          <div><b id="rounds">0</b><small>rounds played</small></div>
+          <div><b id="bestcps">0.0</b><small>best per second</small></div>
+        </div>
+        <table><thead><tr><th>Mode</th><th>Best</th><th>Super Saiyan</th></tr></thead><tbody id="best-rows"></tbody></table>
+        <button class="link" id="reset" type="button">Reset my scores</button>
+        <p class="note">Scores are saved in this browser only.</p>
+      </div>
+
+      <div id="p-history" role="tabpanel" aria-labelledby="tab-history" hidden>
+        <ul class="hist" id="hist"></ul>
+        <p class="note" id="hist-empty">Your last 8 rounds appear here.</p>
+      </div>
+    </aside>
+    <div id="scene-front" aria-hidden="true"></div>
+  </div>
+</main>
+
+<script>
+  // ===== 1. ELEMENTS =====
+  const $ = (id) => document.getElementById(id);
+  const clickBtn = $("click-btn"), timeEl = $("time"), countEl = $("count"), cpsEl = $("cps");
+  const ring = $("ring"), message = $("message"), shareBtn = $("share"), stage = $("stage");
+  const RING = 578; // circle length: 2 x pi x 92
+
+  // ===== 2. SETTINGS & SAVED DATA =====
+  const MODES = [5, 10, 30, 60];
+  // theme name: [label, color dot]
+  const THEMES = {
+    cosmos: ["Cosmos", "#ffb347"], math: ["Mathematics", "#3d4cff"], quantum: ["Quantum", "#c77dff"],
+    sunny: ["Sunny", "#ff5a1f"], night: ["Night", "#ff5fa8"], forest: ["Forest", "#f0c94a"],
+    neon: ["Neon", "#22e6c7"], sakura: ["Sakura", "#e0457b"]
+  };
+  const AVATARS = ["😎", "🦊", "🚀", "🐉", "🐼", "⚡", "👑", "🎯"];
+  let profile = { name: "", avatar: "😎", theme: "sunny", sound: true, fx: true, space: true,
+                  seconds: 10, saiyan: false, total: 0, rounds: 0, bestCps: 0, best: {}, bestX: {}, history: [] };
+
+  function save() { try { localStorage.setItem("sigmaClickV2", JSON.stringify(profile)); } catch (e) {} }
+  function load() {
+    try { const raw = localStorage.getItem("sigmaClickV2"); if (raw) Object.assign(profile, JSON.parse(raw)); } catch (e) {}
+  }
+
+
+  // ===== THEME ART: the picture on the big button (one SVG drawing per theme) =====
+  const ART = {
+    cosmos: `<svg viewBox="0 0 200 200"><defs><radialGradient id="c1" cx=".5" cy=".4"><stop offset="0" stop-color="#3a1b7a"/><stop offset="1" stop-color="#0a0a24"/></radialGradient><radialGradient id="c2" cx=".3" cy=".3"><stop offset="0" stop-color="#ffd27a"/><stop offset="1" stop-color="#e2561f"/></radialGradient></defs><rect width="200" height="200" fill="url(#c1)"/><g fill="#fff"><circle cx="30" cy="40" r="1.6"/><circle cx="165" cy="30" r="1.2"/><circle cx="150" cy="160" r="1.6"/><circle cx="40" cy="150" r="1.2"/><circle cx="100" cy="20" r="1"/></g><g transform="rotate(-22 100 100)"><ellipse cx="100" cy="100" rx="82" ry="20" fill="none" stroke="#ffd9a0" stroke-width="7" opacity=".5"/></g><circle cx="100" cy="92" r="46" fill="url(#c2)"/><path d="M60 84q40 14 80-4" stroke="#b83d10" stroke-width="5" fill="none" opacity=".35"/><g transform="rotate(-22 100 92)"><path d="M18 92A82 20 0 0 0 182 92" fill="none" stroke="#ffd9a0" stroke-width="7" opacity=".95"/></g></svg>`,
+    math: `<svg viewBox="0 0 200 200"><defs><linearGradient id="m1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2b2f9e"/><stop offset=".6" stop-color="#3d4cff"/><stop offset="1" stop-color="#00b3c7"/></linearGradient></defs><rect width="200" height="200" fill="url(#m1)"/><g stroke="#fff" stroke-opacity=".18"><path d="M0 50h200M0 100h200M0 150h200M50 0v200M100 0v200M150 0v200"/></g><path d="M20 150C60 30 110 30 180 140" fill="none" stroke="#ffd23f" stroke-width="3" stroke-dasharray="6 5"/><g fill="#fff" font-family="Cambria Math,STIX Two Math,Times New Roman,serif" font-style="italic" text-anchor="middle"><text x="100" y="120" font-size="92" font-weight="700">π</text><text x="38" y="52" font-size="30" fill="#ffd23f">∑</text><text x="162" y="52" font-size="30" fill="#ff9ec7">∫</text><text x="38" y="150" font-size="26" fill="#9bf6ff">∞</text><text x="162" y="150" font-size="24" fill="#b8ffb0">√</text></g></svg>`,
+    quantum: `<svg viewBox="0 0 200 200"><defs><radialGradient id="q1" cx=".5" cy=".5"><stop offset="0" stop-color="#3a1670"/><stop offset="1" stop-color="#0b0618"/></radialGradient><radialGradient id="q2" cx=".4" cy=".4"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#c77dff"/></radialGradient></defs><rect width="200" height="200" fill="url(#q1)"/><g fill="none" stroke-width="3"><ellipse cx="100" cy="100" rx="78" ry="28" stroke="#00e5ff"/><ellipse cx="100" cy="100" rx="78" ry="28" stroke="#ff4fd8" transform="rotate(60 100 100)"/><ellipse cx="100" cy="100" rx="78" ry="28" stroke="#c77dff" transform="rotate(120 100 100)"/></g><circle cx="100" cy="100" r="14" fill="url(#q2)"/><circle cx="178" cy="100" r="6" fill="#00e5ff"/><circle cx="139" cy="168" r="6" fill="#ff4fd8"/><circle cx="61" cy="168" r="6" fill="#c77dff"/></svg>`,
+    sunny: `<svg viewBox="0 0 200 200"><defs><linearGradient id="s1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4aa8ff"/><stop offset="1" stop-color="#bfe6ff"/></linearGradient></defs><rect width="200" height="200" fill="url(#s1)"/><path d="M100 22v18M100 160v18M22 100h18M160 100h18M45 45l13 13M142 142l13 13M155 45l-13 13M58 142l-13 13" stroke="#ffd23f" stroke-width="7" stroke-linecap="round"/><circle cx="100" cy="100" r="40" fill="#ffc42e"/><g fill="#fff"><ellipse cx="55" cy="150" rx="30" ry="12"/><ellipse cx="80" cy="142" rx="22" ry="14"/><ellipse cx="150" cy="60" rx="24" ry="10"/><ellipse cx="168" cy="55" rx="14" ry="9"/></g></svg>`,
+    night: `<svg viewBox="0 0 200 200"><defs><linearGradient id="n1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a1f6e"/><stop offset="1" stop-color="#6b2d8f"/></linearGradient></defs><rect width="200" height="200" fill="url(#n1)"/><g fill="#fff"><circle cx="30" cy="40" r="2"/><circle cx="160" cy="35" r="2.4"/><circle cx="170" cy="120" r="1.6"/><circle cx="40" cy="130" r="1.8"/><circle cx="120" cy="25" r="1.4"/><circle cx="75" cy="165" r="1.6"/></g><circle cx="100" cy="95" r="44" fill="#ffe27a"/><circle cx="118" cy="83" r="40" fill="#46277f"/><path d="M150 150l4 9 9 4-9 4-4 9-4-9-9-4 9-4z" fill="#ffe27a"/></svg>`,
+    forest: `<svg viewBox="0 0 200 200"><defs><linearGradient id="f1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c5a3f"/><stop offset="1" stop-color="#0d2f21"/></linearGradient></defs><rect width="200" height="200" fill="url(#f1)"/><circle cx="150" cy="48" r="18" fill="#ffe9a3" opacity=".9"/><g fill="#2f9e5b"><path d="M55 160H25l30-55z"/><path d="M55 125H31l24-45z"/><path d="M145 168h-34l34-62z"/><path d="M145 128h-27l27-50z"/></g><g fill="#6b4423"><rect x="51" y="160" width="8" height="16"/><rect x="141" y="168" width="8" height="14"/></g><g fill="#f0c94a"><circle cx="100" cy="150" r="2.5"/><circle cx="80" cy="60" r="2"/><circle cx="110" cy="100" r="2"/></g></svg>`,
+    neon: `<svg viewBox="0 0 200 200"><defs><linearGradient id="z1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0a0f1e"/><stop offset="1" stop-color="#2a0a4a"/></linearGradient></defs><rect width="200" height="200" fill="url(#z1)"/><path d="M0 150h200M0 170h200M0 190h200M40 140L-20 200M100 140v60M160 140l60 60" stroke="#22e6c7" stroke-opacity=".3" fill="none"/><path d="M112 22L62 108h34l-10 70 54-92h-36z" fill="#22e6c7" stroke="#ff2bd6" stroke-width="5" stroke-linejoin="round"/></svg>`,
+    sakura: `<svg viewBox="0 0 200 200"><defs><radialGradient id="k1" cx=".5" cy=".5"><stop offset="0" stop-color="#ffd6e4"/><stop offset="1" stop-color="#ff8fb4"/></radialGradient></defs><rect width="200" height="200" fill="url(#k1)"/><g transform="translate(100 100)" fill="#fff" stroke="#e0457b" stroke-width="2.5"><ellipse cy="-34" rx="20" ry="30"/><ellipse cy="-34" rx="20" ry="30" transform="rotate(72)"/><ellipse cy="-34" rx="20" ry="30" transform="rotate(144)"/><ellipse cy="-34" rx="20" ry="30" transform="rotate(216)"/><ellipse cy="-34" rx="20" ry="30" transform="rotate(288)"/></g><circle cx="100" cy="100" r="9" fill="#ffd23f"/><g fill="#fff" opacity=".85"><ellipse cx="30" cy="40" rx="7" ry="4" transform="rotate(30 30 40)"/><ellipse cx="170" cy="150" rx="7" ry="4" transform="rotate(-30 170 150)"/></g></svg>`
+  };
+
+  // ===== THEME SCENES: floating items as [text, left %, top %, size px, color]. A color makes it an equation. =====
+  const SCENES = {
+    cosmos: {
+      front: [["🪐",92,-7,74],["☄️",-5,44,46],["🛰️",95,70,40],["✨",46,-6,30],["🌠",2,96,40],["Gμν + Λgμν = 8πG/c⁴ Tμν",8,-6,17,"#ffb347"],["E = mc²",80,95,20,"#ffb347"]],
+      back: [["🌌",6,10,110],["🪐",78,68,140],["⭐",34,78,44],["✨",68,16,40],["🌠",46,40,70],["🌙",18,52,60]]
+    },
+    math: {
+      front: [["e^{iπ} + 1 = 0",76,-5,20,"#3d4cff"],["∮ f(z)/(z−a) dz = 2πi·f(a)",-6,20,17,"#d6336c"],["ζ(s) = Σ n⁻ˢ",86,30,20,"#0c8599"],["∫_{∂M} ω = ∫_M dω",-6,56,17,"#e8590c"],["∀ε>0 ∃δ>0",82,62,18,"#7048e8"],["∫ K dA = 2πχ(M)",4,95,17,"#2b8a3e"],["Σ 1/n² = π²/6",70,96,18,"#c2255c"],["∫ e^{−x²} dx = √π",38,-6,17,"#1971c2"]],
+      back: [["π",8,12,150,"#3d4cff"],["∑",85,18,130,"#d6336c"],["∫",20,70,170,"#0c8599"],["∞",70,75,150,"#7048e8"],["e^{iπ}+1=0",35,40,44,"#3d4cff"],["det(A−λI)=0",52,88,34,"#e8590c"],["ℝ ℂ ℤ ℚ",60,8,40,"#2b8a3e"]]
+    },
+    quantum: {
+      front: [["⚛️",92,-6,64],["iℏ ∂ψ/∂t = Ĥψ",-4,30,20,"#c77dff"],["|ψ⟩ = α|0⟩ + β|1⟩",80,40,18,"#00e5ff"],["ΔxΔp ≥ ℏ/2",88,78,18,"#ff4fd8"],["🌀",-4,88,48],["⟨ψ|ψ⟩ = 1",40,100,16,"#c77dff"]],
+      back: [["⚛️",8,14,150],["🌀",76,66,150],["ψ",80,10,160,"#c77dff"],["ℏ",14,70,130,"#00e5ff"],["Ĥψ = Eψ",40,45,50,"#ff4fd8"]]
+    },
+    sunny:  { front: [["☀️",92,-7,70],["☁️",-5,30,60],["🌈",90,60,56],["🦋",4,92,38]], back: [["☁️",10,14,130],["☀️",80,10,120],["🌤️",60,70,110],["🦋",30,80,50],["🌈",44,40,90]] },
+    night:  { front: [["🌙",92,-6,64],["⭐",-4,36,34],["🦉",94,66,44],["🌠",3,94,40]], back: [["🌌",10,12,120],["🌙",78,14,110],["⭐",30,70,50],["🦉",70,76,90],["✨",50,38,50]] },
+    forest: { front: [["🌲",93,-6,64],["🍃",-4,40,40],["🦊",94,68,44],["🍄",4,94,36]], back: [["🌲",6,50,150],["🌳",80,56,150],["🍃",40,14,70],["🦌",60,78,90],["🦋",24,20,50]] },
+    neon:   { front: [["⚡",92,-6,64],["🕹️",-5,38,44],["💥",94,66,42],["🎮",4,94,42]], back: [["⚡",10,16,150],["🎮",76,62,130],["💥",44,40,80],["🕹️",24,76,100]] },
+    sakura: { front: [["🌸",92,-6,62],["🌸",-5,34,40],["🎏",94,66,44],["🌸",4,94,34]], back: [["🌸",8,14,130],["🌸",78,30,100],["🌸",50,72,140],["🎏",20,64,90],["🌸",64,10,60]] }
+  };
+
+  let sceneTheme = "";
+  function fillLayer(layer, items) {
+    layer.textContent = "";
+    items.forEach(function (it, i) {
+      const el = document.createElement("span");
+      el.className = "fl" + (it[4] ? " eq" : "");
+      el.textContent = it[0];
+      el.style.left = it[1] + "%"; el.style.top = it[2] + "%"; el.style.fontSize = it[3] + "px";
+      if (it[4]) { el.style.color = it[4]; el.style.borderColor = it[4]; }
+      el.style.setProperty("--r", (i % 2 ? 6 : -6) + "deg");
+      el.style.animationDuration = (7 + (i * 1.7) % 6) + "s";
+      el.style.animationDelay = "-" + ((i * 2.3) % 7) + "s";
+      layer.appendChild(el);
+    });
+  }
+  function buildScene() {
+    const sc = SCENES[profile.theme] || SCENES.sunny;
+    $("art").innerHTML = ART[profile.theme] || ART.sunny;
+    fillLayer($("scene-back"), sc.back);
+    fillLayer($("scene-front"), sc.front);
+  }
+
+  // ===== 3. ROUND STATE =====
+  let count = 0, running = false, startTime = 0, timerId = null, lastResult = "";
+
+  // ===== 4. SOUND (made with the browser, no files needed) =====
+  let audio = null;
+  function beep(freq, len) {
+    if (!profile.sound) return;
+    try {
+      audio = audio || new (window.AudioContext || window.webkitAudioContext)();
+      const o = audio.createOscillator(), g = audio.createGain();
+      o.frequency.value = freq; g.gain.value = 0.04;
+      o.connect(g); g.connect(audio.destination);
+      o.start(); o.stop(audio.currentTime + len);
+    } catch (e) {}
+  }
+
+  // ===== 5. DRAWING THE SCREEN =====
+  function rankFor(cps) {
+    if (cps < 3) return "Warming up";
+    if (cps < 5) return "Fast fingers";
+    if (cps < 7) return "Sigma";
+    if (cps < 10) return "Legend";
+    return "Mythic";
+  }
+
+  function allModes() {
+    const set = new Set(MODES);
+    Object.keys(profile.best).concat(Object.keys(profile.bestX)).forEach(function (k) { set.add(Number(k)); });
+    return Array.from(set).sort(function (a, b) { return a - b; });
+  }
+
+  function renderStatic() {
+    document.documentElement.dataset.theme = profile.theme;
+    if (sceneTheme !== profile.theme) { sceneTheme = profile.theme; buildScene(); }
+    $("who-avatar").textContent = profile.avatar;
+    $("who-name").textContent = profile.name || "Player";
+    $("sound").checked = profile.sound; $("fx").checked = profile.fx; $("space").checked = profile.space;
+    $("saiyan").checked = profile.saiyan;
+    document.documentElement.dataset.saiyan = profile.saiyan ? "on" : "off";
+    document.querySelectorAll("#modes .chip").forEach(function (b) { b.setAttribute("aria-pressed", String(Number(b.dataset.sec) === profile.seconds)); });
+    document.querySelectorAll("#themes .chip").forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.theme === profile.theme)); });
+    document.querySelectorAll("#avatars button").forEach(function (b) { b.setAttribute("aria-pressed", String(b.textContent === profile.avatar)); });
+    $("custom").value = MODES.indexOf(profile.seconds) === -1 ? profile.seconds : "";
+  }
+
+  function renderRecords() {
+    $("total").textContent = profile.total;
+    $("rounds").textContent = profile.rounds;
+    $("bestcps").textContent = profile.bestCps.toFixed(1);
+    const body = $("best-rows"); body.textContent = "";
+    allModes().forEach(function (s) {
+      const tr = document.createElement("tr"), a = document.createElement("td"), b = document.createElement("td"), c = document.createElement("td");
+      a.textContent = s + " seconds"; b.textContent = profile.best[s] ? profile.best[s] + " clicks" : "-";
+      c.textContent = profile.bestX[s] ? profile.bestX[s] + " clicks" : "-";
+      tr.append(a, b, c); body.appendChild(tr);
+    });
+    const list = $("hist"); list.textContent = "";
+    profile.history.forEach(function (h) {
+      const li = document.createElement("li"), l = document.createElement("span"), r = document.createElement("span");
+      l.textContent = h.s + "s: " + h.c + " clicks (" + h.cps.toFixed(1) + "/s)" + (h.x ? " x8" : ""); r.textContent = h.rank;
+      li.append(l, r); list.appendChild(li);
+    });
+    $("hist-empty").hidden = profile.history.length > 0;
+  }
+
+  function resetDisplay() {
+    count = 0;
+    countEl.textContent = "0"; cpsEl.textContent = "0.0";
+    timeEl.textContent = profile.seconds.toFixed(1);
+    ring.style.strokeDashoffset = "0";
+    $("lbl").textContent = "Click to start";
+  }
+
+  function showResult(c, cps, rank, isBest) {
+    $("r-clicks").textContent = c; $("r-cps").textContent = cps.toFixed(1); $("r-rank").textContent = rank;
+    $("r-best").hidden = !isBest; $("r-x").hidden = !profile.saiyan;
+    message.hidden = true; $("result").hidden = false;
+  }
+  function hideResult() { $("result").hidden = true; message.hidden = false; }
+
+  // ===== 6. THE GAME =====
+  function startRound() {
+    running = true; startTime = Date.now();
+    shareBtn.disabled = true;
+    setControlsLocked(true);
+    hideResult(); message.textContent = "Go go go!";
+    timerId = setInterval(tick, 50);
+  }
+
+  function tick() {
+    const elapsed = (Date.now() - startTime) / 1000;
+    const left = Math.max(0, profile.seconds - elapsed);
+    timeEl.textContent = left.toFixed(1);
+    ring.style.strokeDashoffset = String(RING * (1 - left / profile.seconds));
+    cpsEl.textContent = (count / Math.max(elapsed, 0.1)).toFixed(1);
+    if (left <= 0) endRound();
+  }
+
+  function endRound() {
+    clearInterval(timerId); running = false;
+    clickBtn.disabled = true;
+    const s = profile.seconds, cps = count / s, rank = rankFor(cps);
+    profile.total += count; profile.rounds += 1;
+    if (cps > profile.bestCps) profile.bestCps = cps;
+    let isBest = false;
+    const bestObj = profile.saiyan ? profile.bestX : profile.best;
+    if (count > (bestObj[s] || 0)) { bestObj[s] = count; isBest = true; }
+    profile.history.unshift({ s: s, c: count, cps: cps, rank: rank, x: profile.saiyan });
+    profile.history = profile.history.slice(0, 8);
+    lastResult = "I got " + count + " clicks in " + s + " seconds (" + cps.toFixed(1) + " per second" + (profile.saiyan ? ", Super Saiyan x8" : "") + "). Rank: " + rank + " on Sigma Click Challenge!";
+    cpsEl.textContent = cps.toFixed(1); timeEl.textContent = "0.0";
+    ring.style.strokeDashoffset = String(RING);
+    showResult(count, cps, rank, isBest);
+    $("lbl").textContent = "Wait...";
+    beep(660, 0.25);
+    save(); renderRecords();
+    // short pause so a stray click does not start a new round
+    setTimeout(function () {
+      clickBtn.disabled = false; $("lbl").textContent = "Play again";
+      shareBtn.disabled = false; setControlsLocked(false);
+    }, 800);
+  }
+
+  function handleClick() {
+    if (clickBtn.disabled) return;
+    if (!running) { resetDisplay(); startRound(); }
+    count += profile.saiyan ? 8 : 1;
+    countEl.textContent = count;
+    $("lbl").textContent = "Click!";
+    beep(300 + Math.min(count, 60) * 8, 0.04);
+    if (profile.fx) popAt(profile.saiyan ? "+8" : "+1");
+  }
+
+  function popAt(label) {
+    const p = document.createElement("span");
+    p.className = "pop"; p.textContent = label;
+    p.style.left = (35 + Math.random() * 30) + "%"; p.style.top = (20 + Math.random() * 20) + "%";
+    p.addEventListener("animationend", function () { p.remove(); });
+    stage.appendChild(p);
+  }
+
+  function setControlsLocked(lock) {
+    document.querySelectorAll("#modes .chip, #custom, #saiyan").forEach(function (el) { el.disabled = lock; });
+  }
+
+  clickBtn.addEventListener("click", handleClick);
+
+  // Space bar clicks (only when the page body or the big button is focused)
+  document.addEventListener("keydown", function (e) {
+    if (e.code !== "Space" || !profile.space) return;
+    if (e.target !== document.body && e.target !== clickBtn) return;
+    e.preventDefault();
+    if (!e.repeat) handleClick();
+  });
+  document.addEventListener("keyup", function (e) {
+    if (e.code === "Space" && profile.space && (e.target === document.body || e.target === clickBtn)) e.preventDefault();
+  });
+
+  // ===== 7. OPTIONS =====
+  function setSeconds(n) {
+    if (running) return;
+    profile.seconds = Math.min(120, Math.max(3, Math.round(n) || 10));
+    save(); renderStatic(); resetDisplay();
+    hideResult(); message.textContent = "Mode: " + profile.seconds + " seconds. Click the big button to start.";
+    shareBtn.disabled = true;
+  }
+
+  MODES.forEach(function (s) {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "chip"; b.dataset.sec = s; b.textContent = s + " seconds";
+    b.addEventListener("click", function () { setSeconds(s); });
+    $("modes").appendChild(b);
+  });
+  $("custom").addEventListener("change", function () { if ($("custom").value) setSeconds(Number($("custom").value)); });
+
+  Object.keys(THEMES).forEach(function (t) {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "chip"; b.dataset.theme = t; b.textContent = THEMES[t][0]; b.style.setProperty("--dot", THEMES[t][1]);
+    b.addEventListener("click", function () { profile.theme = t; save(); renderStatic(); });
+    $("themes").appendChild(b);
+  });
+
+  AVATARS.forEach(function (emoji) {
+    const b = document.createElement("button");
+    b.type = "button"; b.textContent = emoji; b.setAttribute("aria-label", "Avatar " + emoji);
+    b.addEventListener("click", function () { profile.avatar = emoji; save(); renderStatic(); });
+    $("avatars").appendChild(b);
+  });
+
+  $("name").addEventListener("input", function () {
+    profile.name = $("name").value; $("who-name").textContent = profile.name || "Player"; save();
+  });
+  ["sound", "fx", "space", "saiyan"].forEach(function (k) {
+    $(k).addEventListener("change", function () { profile[k] = $(k).checked; save(); renderStatic(); });
+  });
+
+  // ===== 8. TABS, SHARE, RESET =====
+  const TABS = ["options", "records", "history"];
+  TABS.forEach(function (name) {
+    $("tab-" + name).addEventListener("click", function () {
+      TABS.forEach(function (n) {
+        $("tab-" + n).setAttribute("aria-selected", String(n === name));
+        $("p-" + n).hidden = n !== name;
+      });
+    });
+  });
+
+  shareBtn.addEventListener("click", function () {
+    if (!lastResult) return;
+    const done = function (t) { shareBtn.textContent = t; setTimeout(function () { shareBtn.textContent = "Copy result"; }, 1800); };
+    try { navigator.clipboard.writeText(lastResult).then(function () { done("Copied!"); }, function () { done("Copy failed"); }); }
+    catch (e) { done("Copy failed"); }
+  });
+
+  let resetArmed = false;
+  $("reset").addEventListener("click", function () {
+    if (!resetArmed) {
+      resetArmed = true; $("reset").textContent = "Click again to confirm";
+      setTimeout(function () { resetArmed = false; $("reset").textContent = "Reset my scores"; }, 3000);
+      return;
+    }
+    profile.total = 0; profile.rounds = 0; profile.bestCps = 0; profile.best = {}; profile.bestX = {}; profile.history = [];
+    resetArmed = false; $("reset").textContent = "Reset my scores";
+    save(); renderRecords(); hideResult(); message.textContent = "Scores reset. Fresh start!";
+  });
+
+  // ===== 9. START UP =====
+  load();
+  $("name").value = profile.name;
+  renderStatic(); renderRecords(); resetDisplay();
+</script>
+</body>
+</html>
